@@ -3,7 +3,8 @@
 ##
 ## Get latest from https://github.com/github/gitignore/blob/master/VisualStudio.gitignore
 
-[Ll]ib/
+[Ll]ib/*
+![Ll]ib/*.md
 
 # User-specific files
 *.rsuser
