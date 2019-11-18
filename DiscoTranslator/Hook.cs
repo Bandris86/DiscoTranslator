@@ -26,19 +26,26 @@ namespace DiscoTranslator
             return true;
         }
 
-        [HarmonyPrefix]
-        [HarmonyPatch(typeof(UnityEngine.UI.Text), "text", MethodType.Setter)]
-        static bool UnityEngine_UI_Text_SetTextPrefix(ref string value)
+        public static bool ContainsHangul(string s)
+        {
+            foreach (var c in s)
+            {
+                if (char.GetUnicodeCategory(c) == System.Globalization.UnicodeCategory.OtherLetter)
+                    return true;
+            }
+            return false;
+        }
+
+        static bool HandleUITranslation(ref string value)
         {
             if (value == null) return false;
+            if (ContainsHangul(value)) return true;
 
             if (UITranslation.TryGetValue(value, out string cache))
             {
                 value = cache;
                 return true;
             }
-
-            FileLog.Log(value);
 
             if (TranslationManager.TryGetTranslationBySource(value.ToLower(), out string Translation))
             {
@@ -54,30 +61,17 @@ namespace DiscoTranslator
         }
 
         [HarmonyPrefix]
+        [HarmonyPatch(typeof(UnityEngine.UI.Text), "text", MethodType.Setter)]
+        static bool UnityEngine_UI_Text_SetTextPrefix(ref string value)
+        {
+            return HandleUITranslation(ref value);
+        }
+
+        [HarmonyPrefix]
         [HarmonyPatch(typeof(UnityEngine.UI.Text), "OnEnable")]
         static bool UnityEngine_UI_Text_OnEnable_Prefix(ref string ___m_Text)
         {
-            if (___m_Text == null) return false;
-
-            if (UITranslation.TryGetValue(___m_Text, out string cache))
-            {
-                ___m_Text = cache;
-                return true;
-            }
-
-            FileLog.Log(___m_Text);
-
-            if (TranslationManager.TryGetTranslationBySource(___m_Text.ToLower().Trim(' '), out string Translation))
-            {
-                UITranslation[___m_Text] = Translation;
-                ___m_Text = Translation;
-            }
-            else
-            {
-                UITranslation[___m_Text] = ___m_Text;
-            }
-
-            return true;
+            return HandleUITranslation(ref ___m_Text);
         }
     }
 }
