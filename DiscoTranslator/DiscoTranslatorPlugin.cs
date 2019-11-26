@@ -77,7 +77,12 @@ namespace DiscoTranslator
 
                 if (extension == ".po")
                 {
-                    var source = new POTranslationSource(filePath);
+                    POTranslationSource source = new POTranslationSource(filePath, true);
+                    if (Path.GetFileNameWithoutExtension(filePath).ToLower().Contains("dialog"))
+                    {
+                        source.EnableStrNo = true;
+                        source.StrNoPrefix = "D";
+                    }
                     TranslationManager.AddSource(source);
                     Logger.LogInfo("Added translation source " + Path.GetFileName(filePath));
                 }
@@ -85,7 +90,7 @@ namespace DiscoTranslator
         }
 
         #region UI
-        private Rect UI = CalculateWindowRect();
+        private Rect UI = CalculateWindowRect(300, 250, 0.15f, 0.2f);
         private bool prettyPrint = true;
 
         bool showingUI = false;
@@ -104,26 +109,28 @@ namespace DiscoTranslator
             if (GUILayout.Button("Export catalog"))
                 ExportCatalog();
 
+            GUILayout.Space(15);
+
             GUILayout.BeginVertical();
 
             if (GUILayout.Button("Export dialogue database"))
             {
                 var db = Resources.FindObjectsOfTypeAll<PixelCrushers.DialogueSystem.DialogueDatabase>()[0];
-                var json = UnityEngine.JsonUtility.ToJson(db, true);
+                var json = UnityEngine.JsonUtility.ToJson(db, prettyPrint);
                 File.WriteAllText(BepInEx.Utility.CombinePaths(Paths.PluginPath, PLUGIN_DIR, "database.json"), json);
             }
             prettyPrint = GUILayout.Toggle(prettyPrint, "Pretty print(format)  JSON output");
-            GUILayout.Label("Warning : This may take long and require over 1GB of memory.");
+            GUILayout.Label("Warning : This may take very long time.");
             GUILayout.EndVertical();
+            GUILayout.Space(15);
+            GUILayout.Label($"Press {toggleKey.Value.ToString()} to close this window.");
             GUI.DragWindow();
         }
 
-        private static Rect CalculateWindowRect()
+        private static Rect CalculateWindowRect(int width, int height, float xpos, float ypos)
         {
-            var width = Mathf.Min(Screen.width, 300);
-            var height = 200;
-            var offsetX = Mathf.RoundToInt((Screen.width - width) / 2f);
-            var offsetY = Mathf.RoundToInt((Screen.height - height) / 2f);
+            var offsetX = Mathf.RoundToInt(Screen.width * xpos - width / 2);
+            var offsetY = Mathf.RoundToInt(Screen.height * ypos - height /2);
             return new Rect(offsetX, offsetY, width, height);
         }
         #endregion

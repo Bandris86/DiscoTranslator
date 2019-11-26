@@ -13,6 +13,7 @@
     <PackageReference Include="Karambolo.PO.Minimal" Version="1.5.1">
       <PrivateAssets></PrivateAssets>
     </PackageReference>
+    <PackageReference Include="NGettext" Version="0.6.4" />
   </ItemGroup>
 
   <ItemGroup>
