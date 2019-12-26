@@ -1,16 +1,16 @@
 # DiscoTranslator
 
-Disco Elysium translation plugin for [BepInEx](https://github.com/BepInEx/BepInEx) (v5.0+) framework.
+Disco Elysium translation plugin for [BepInEx](https://github.com/BepInEx/BepInEx) v5.0+ (not RC1) framework.
 
 ## How this thing works
 
-Disco Elysium has translation framework (`I2.Loc`) in it.
+Disco Elysium already has [I2 Localization](https://assetstore.unity.com/packages/tools/localization/i2-localization-14884) translation framework in it.
 
 This plugin hooks translation request(`I2.Loc.LocalizationManager.GetTermTranslation()`) and return your translated text instead.
 
 ## Usage
 
-Press <kbd>Shift</kbd> + <kbd>T</kbd> (configurable) to open GUI window. Press again to close.
+Press <kbd>Alt</kbd> + <kbd>T</kbd> (configurable) to open GUI window. Press again to close.
 
 ## Features
 
@@ -20,7 +20,7 @@ The plugin loads `gettext PO` files from `DiscoTranslator\Translation` directory
 
 ### 2. Runtime reload
 
-Press <kbd>Shift</kbd> + <kbd>R</kbd> (configurable) or press `Reload translation` button from UI to reload all translation files.
+Press <kbd>Alt</kbd> + <kbd>R</kbd> (configurable) or press `Reload translation` button from UI to reload all translation files.
 
 Reloaded translations will be applied when new texts appear or UI component reappears.
 
@@ -31,5 +31,3 @@ Press `Export catalog` button from UI. The plugin will create `gettext POT` cata
 ### 4. Database export
 
 Press `Export dialogue database` button from UI. The plugin will create `database.json` file at `DiscoTranslator` directory.
-
-**WARNING : This may take very long and exported JSON file size will be over 300MB!**
