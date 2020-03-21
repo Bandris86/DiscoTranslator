@@ -1,6 +1,5 @@
 ﻿using DiscoTranslator.Translation;
 using HarmonyLib;
-using LocalizationCustomSystem;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,6 +17,19 @@ namespace DiscoTranslator
             if (TranslationManager.TryGetTranslation(Term, out string Translation))
             {
                 __result = Translation;
+                return false;
+            }
+
+            return true;
+        }
+
+        [HarmonyPrefix]
+        [HarmonyPatch(typeof(I2.Loc.LocalizationManager), nameof(I2.Loc.LocalizationManager.FindAsset))]
+        static bool FindAssetPrefix(string value, ref object __result)
+        {
+            if (ButtonImageManager.TryGetImage(value, out UnityEngine.Sprite sprite))
+            {
+                __result = sprite;
                 return false;
             }
 
