@@ -26,9 +26,6 @@ namespace DiscoTranslator
             var harmony = BepInEx.Harmony.HarmonyWrapper.PatchAll(typeof(Hook));
             TranslationManager.LogEvent += Logger.Log;
 
-            var method = harmony.GetPatchedMethods().FirstOrDefault();
-            Logger.LogDebug(method.Name);
-
             toggleKey = Config.Bind("Hotkeys", "Toggle interface", new KeyboardShortcut(KeyCode.T, KeyCode.LeftAlt));
             reloadKey = Config.Bind("Hotkeys", "Reload translation", new KeyboardShortcut(KeyCode.R, KeyCode.LeftAlt));
         }

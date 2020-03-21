@@ -9,8 +9,7 @@ namespace DiscoTranslator.Translation
         string Name { get; }
         bool SourceTranslationAvailable { get; }
 
-        bool TryGetTranslationByKey(string Key, out string Translation);
-        bool TryGetTranslationBySource(string Source, out string Translation);
+        bool TryGetTranslation(string Key, out string Translation);
 
         void Reload();
     }

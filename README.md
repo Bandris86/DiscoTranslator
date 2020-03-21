@@ -6,7 +6,7 @@ Disco Elysium translation plugin for [BepInEx](https://github.com/BepInEx/BepInE
 
 Disco Elysium already has [I2 Localization](https://assetstore.unity.com/packages/tools/localization/i2-localization-14884) translation framework in it.
 
-This plugin hooks translation request(`I2.Loc.LocalizationManager.GetTermTranslation()`) and return your translated text instead.
+This plugin hooks translation request(`I2.Loc.LocalizationManager.GetTranslation()`) and return your translated text instead.
 
 ## Usage
 

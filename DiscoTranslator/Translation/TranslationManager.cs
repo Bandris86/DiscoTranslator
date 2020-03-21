@@ -16,38 +16,17 @@ namespace DiscoTranslator.Translation
             LogEvent?.Invoke(level, message);
         }
 
-        public static bool TryGetTranslationByKey(string Key, out string Translation)
+        public static bool TryGetTranslation(string Key, out string Translation)
         {
             Translation = null;
             if (!EnableTranslation)
                 return false;
 
             foreach (var source in Sources)
-            {
-                if (source.TryGetTranslationByKey(Key, out string Tr))
-                {
-                    Translation = Tr;
-                    break;
-                }
-            }
-            return Translation != null;
-        }
+                if (source.TryGetTranslation(Key, out Translation))
+                    return true;
 
-        public static bool TryGetTranslationBySource(string Source, out string Translation)
-        {
-            Translation = null;
-            if (!EnableTranslation)
-                return false;
-
-            foreach (var source in Sources)
-            {
-                if (source.SourceTranslationAvailable && source.TryGetTranslationBySource(Source, out string Tr))
-                {
-                    Translation = Tr;
-                    break;
-                }
-            }
-            return Translation != null;
+            return false;
         }
 
         public static void AddSource(ITranslationSource source)

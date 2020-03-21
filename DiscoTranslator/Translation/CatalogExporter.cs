@@ -31,15 +31,15 @@ namespace DiscoTranslator.Translation
             var gen = new POGenerator();
 
             // Need to manually load some LanguageSourceAsset
-            foreach (var path in DIALOGUE_SYSTEM_SOURCE_PATHS)
-                languageSources.Add(Resources.Load<I2.Loc.LanguageSourceAsset>(path));
+            // foreach (var path in DIALOGUE_SYSTEM_SOURCE_PATHS)
+            //     languageSources.Add(Resources.Load<I2.Loc.LanguageSourceAsset>(path));
 
             foreach (var source in languageSources)
             {
                 var fullName = source.name;
                 var shortName = fullName.Replace("Languages", "");
                 POCatalog catalog = null;
-                if (shortName == "Dialogue" || shortName == "Conversation")
+                if (shortName == "Dialogue")
                     continue;
 
                 catalog = LanguageSourceToCatalog(source, 0);
@@ -53,22 +53,12 @@ namespace DiscoTranslator.Translation
                 }
             }
 
-
-            // Dialogue and Conversation LanguageSourceAsset has wrong/outdated data
-            // Need to extract translation data them from DialogueDatabase
+            // Manually generate dialogue catalog for additional infos
+            // Actor, conversant, conversation context
 
             var db = Resources.FindObjectsOfTypeAll<DialogueDatabase>()[0];
 
-            var conversationCatalog = db.GetConversationCatalog();
-            var conversationCatalogPath = Path.Combine(directory, "Conversation.pot");
-
-            using (var file = File.Create(conversationCatalogPath))
-            using (var writer = new StreamWriter(file))
-            {
-                gen.Generate(writer, conversationCatalog);
-            }
-
-            var dialogueCatalog = db.GetDialogueCatalog();
+            var dialogueCatalog = GetDialogueCatalog(db);
             var dialogueCatalogPath = Path.Combine(directory, "Dialogue.pot");
 
             using (var file = File.Create(dialogueCatalogPath))
@@ -97,41 +87,17 @@ namespace DiscoTranslator.Translation
             return catalog;
         }
 
-        public static IDictionary<int, string> GetActors(DialogueDatabase db)
+        public static IDictionary<int, Actor> GetActors(DialogueDatabase db)
         {
-            var ret = new Dictionary<int, string>();
+            var ret = new Dictionary<int, Actor>();
 
             foreach (var actor in db.actors)
             {
-                ret[actor.id] = actor.Name;
+                ret[actor.id] = actor;
             }
             return ret;
         }
-
-        public static POCatalog GetConversationCatalog(this DialogueDatabase db)
-        {
-            var catalog = InitCatalog();
-
-            foreach (var conversation in db.conversations)
-            {
-                foreach (var field in conversation.fields)
-                {
-                    if (string.IsNullOrWhiteSpace(field.value))
-                        continue;
-                    if (!ConversationTranslatableFields.Contains(field.title))
-                        continue;
-
-                    string key = $"Dialogue System/Conversation/{conversation.id}/{field.title}";
-                    string source = field.value;
-
-                    var entry = new POSingularEntry(new POKey(source, contextId: key));
-                    catalog.Add(entry);
-                }
-            }
-
-            return catalog;
-        }
-
+        
         public static POCatalog GetDialogueCatalog(this DialogueDatabase db)
         {
             var actors = GetActors(db);
@@ -149,7 +115,7 @@ namespace DiscoTranslator.Translation
                         if (!DialogueTranslatableFields.Contains(field.title))
                             continue;
 
-                        string key = $"Dialogue System/Conversation/{dialogue.conversationID}/Entry/{dialogue.id}/{field.title}";
+                        string key = $"{field.title}/{Field.LookupValue(dialogue.fields, "Articy Id")}";
                         string source = field.value;
 
                         var entry = new POSingularEntry(new POKey(source, contextId: key))
@@ -159,10 +125,10 @@ namespace DiscoTranslator.Translation
 
                         entry.Comments.Add(new POTranslatorComment { Text = $"Title = {conversation.Title}" });
                         entry.Comments.Add(new POTranslatorComment { Text = $"Description = {conversation.Description.Replace("\n", "\\n")}" });
-                        if (actors.TryGetValue(dialogue.ActorID, out string actor))
-                            entry.Comments.Add(new POTranslatorComment { Text = $"Actor = {actor}" });
-                        if (actors.TryGetValue(dialogue.ConversantID, out string conversant))
-                            entry.Comments.Add(new POTranslatorComment { Text = $"Conversant = {conversant}" });
+                        if (actors.TryGetValue(dialogue.ActorID, out Actor actor))
+                            entry.Comments.Add(new POTranslatorComment { Text = $"Actor = {actor.Name}" });
+                        if (actors.TryGetValue(dialogue.ConversantID, out Actor conversant))
+                            entry.Comments.Add(new POTranslatorComment { Text = $"Conversant = {conversant.Name}" });
 
                         catalog.Add(entry);
                     }

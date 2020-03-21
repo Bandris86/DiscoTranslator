@@ -18,8 +18,7 @@ namespace DiscoTranslator.Translation
         public bool EnableStrNo { get; set; } = false;
         public string StrNoPrefix { get; set; } = string.Empty;
         
-        private IDictionary<string, POTranslationEntry> keyTranslationData;
-        private IDictionary<string, string> sourceTranslationData;
+        private IDictionary<string, POTranslationEntry> TranslationData;
 
         public POTranslationSource(string poFilePath, bool loadUntranslated)
         {
@@ -49,10 +48,8 @@ namespace DiscoTranslator.Translation
                 throw new Exception($"Failed to parse po file {POFilePath}");
 
             var catalog = result.Catalog;
-            SourceTranslationAvailable = catalog.Count < 1000;
 
-            keyTranslationData = new Dictionary<string, POTranslationEntry>();
-            sourceTranslationData = new Dictionary<string, string>();
+            TranslationData = new Dictionary<string, POTranslationEntry>();
 
             for (int i = 0; i < catalog.Count; i++)
             {
@@ -65,22 +62,20 @@ namespace DiscoTranslator.Translation
                     if (!string.IsNullOrWhiteSpace(sEntry.Translation))
                     {
                         translation = sEntry.Translation;
-                        if (SourceTranslationAvailable)
-                            sourceTranslationData[sEntry.Key.Id.ToLower().Trim(' ')] = sEntry.Translation;
                     }
                     else if (LoadUntranslated)
                         translation = sEntry.Key.Id;
                     else
                         continue;
 
-                    keyTranslationData.Add(sEntry.Key.ContextId, new POTranslationEntry(translation, i+1));
+                    TranslationData.Add(sEntry.Key.ContextId, new POTranslationEntry(translation, i+1));
                 }
             }
         }
 
-        public bool TryGetTranslationByKey(string Key, out string Translation)
+        public bool TryGetTranslation(string Key, out string Translation)
         {
-            if (keyTranslationData.TryGetValue(Key, out var TranslationEntry))
+            if (TranslationData.TryGetValue(Key, out var TranslationEntry))
             {
                 if (EnableStrNo)
                     Translation = string.Format("{0}{1}:{2}", StrNoPrefix, TranslationEntry.StrNo, TranslationEntry.Translation);
@@ -92,11 +87,6 @@ namespace DiscoTranslator.Translation
 
             Translation = null;
             return false;
-        }
-
-        public bool TryGetTranslationBySource(string Source, out string Translation)
-        {
-            return sourceTranslationData.TryGetValue(Source, out Translation);
         }
 
         private class POTranslationEntry
