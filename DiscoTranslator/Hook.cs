@@ -10,6 +10,8 @@ namespace DiscoTranslator
 {
     public static class Hook
     {
+        public static bool EnableImageHook = true;
+
         [HarmonyPrefix]
         [HarmonyPatch(typeof(I2.Loc.LocalizationManager), nameof(I2.Loc.LocalizationManager.GetTranslation))]
         static bool GetTermTranslationPrefix(string Term, ref string __result)
@@ -27,7 +29,9 @@ namespace DiscoTranslator
         [HarmonyPatch(typeof(I2.Loc.LocalizationManager), nameof(I2.Loc.LocalizationManager.FindAsset))]
         static bool FindAssetPrefix(string value, ref object __result)
         {
-            if (ButtonImageManager.TryGetImage(value, out UnityEngine.Sprite sprite))
+            if (!EnableImageHook) return true;
+
+            if (ImageManager.TryGetImage(value, out UnityEngine.Sprite sprite))
             {
                 __result = sprite;
                 return false;

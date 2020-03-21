@@ -18,28 +18,17 @@ namespace DiscoTranslator.Translation
             new HashSet<string>(new string[] { "Alternate1", "Alternate2", "Alternate3", "Alternate4", "Dialogue Text", "tooltip1",
                 "tooltip10", "tooltip2", "tooltip3", "tooltip4", "tooltip5", "tooltip6", "tooltip7", "tooltip8", "tooltip9" });
 
-        private static readonly string[] DIALOGUE_SYSTEM_SOURCE_PATHS = new string[]
-        {
-            "Languages/DialogueLanguages",
-            "Languages/ConversationLanguages",
-            "Languages/ActorsLanguages"
-        };
-
         public static void ExportAll(string directory)
         {
-            var languageSources = new List<I2.Loc.LanguageSourceAsset>(Resources.FindObjectsOfTypeAll<I2.Loc.LanguageSourceAsset>());
+            var languageSources = Resources.FindObjectsOfTypeAll<I2.Loc.LanguageSourceAsset>();
             var gen = new POGenerator();
-
-            // Need to manually load some LanguageSourceAsset
-            // foreach (var path in DIALOGUE_SYSTEM_SOURCE_PATHS)
-            //     languageSources.Add(Resources.Load<I2.Loc.LanguageSourceAsset>(path));
 
             foreach (var source in languageSources)
             {
                 var fullName = source.name;
                 var shortName = fullName.Replace("Languages", "");
                 POCatalog catalog = null;
-                if (shortName == "Dialogue")
+                if (shortName == "Dialogue" || shortName == "ButtonsImages")
                     continue;
 
                 int engIndex = source.mSource.GetLanguageIndex("English");
@@ -78,7 +67,7 @@ namespace DiscoTranslator.Translation
                 string key = term.Term;
                 string source = term.Languages[languageIndex];
 
-                if (string.IsNullOrEmpty(source))
+                if (string.IsNullOrWhiteSpace(source) || source == "\"")
                     continue;
 
                 var entry = new POSingularEntry(new POKey(source, contextId: key));

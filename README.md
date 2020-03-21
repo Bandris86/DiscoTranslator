@@ -16,9 +16,9 @@ Press <kbd>Alt</kbd> + <kbd>T</kbd> (configurable) to open GUI window. Press aga
 
 ### 1. Translation loader
 
-The plugin loads `gettext PO` files from `DiscoTranslator\Translation` directory.
+Load `gettext PO` files from `DiscoTranslator\Translation` directory.
 
-### 2. Runtime reload
+### 2. Runtime translation reload
 
 Press <kbd>Alt</kbd> + <kbd>R</kbd> (configurable) or press `Reload translation` button from UI to reload all translation files.
 

@@ -37,7 +37,7 @@ namespace DiscoTranslator
         void Awake()
         {
             LoadTranslation();
-            ButtonImageManager.LoadButtonImages(Path.Combine(Paths.PluginPath, PLUGIN_DIR, "ButtonImages"));
+            ImageManager.LoadImages(Path.Combine(Paths.PluginPath, PLUGIN_DIR, "Images"));
         }
 
         void Update()
@@ -105,6 +105,7 @@ namespace DiscoTranslator
         void WindowFunction(int windowID)
         {
             TranslationManager.EnableTranslation = GUILayout.Toggle(TranslationManager.EnableTranslation, "Enable translation");
+
             if (GUILayout.Button("Reload translations"))
                 TranslationManager.ReloadAllSources();
 
@@ -112,9 +113,7 @@ namespace DiscoTranslator
                 ExportCatalog();
 
             GUILayout.Space(15);
-
-            GUILayout.BeginVertical();
-
+            
             if (GUILayout.Button("Export dialogue database"))
             {
                 var db = Resources.FindObjectsOfTypeAll<PixelCrushers.DialogueSystem.DialogueDatabase>()[0];
@@ -122,12 +121,10 @@ namespace DiscoTranslator
                 File.WriteAllText(BepInEx.Utility.CombinePaths(Paths.PluginPath, PLUGIN_DIR, "database.json"), json);
             }
             prettyPrint = GUILayout.Toggle(prettyPrint, "Pretty print(format)  JSON output");
-            GUILayout.Label("Warning : This may take very long time.");
-            GUILayout.EndVertical();
             GUILayout.Space(15);
 
-            if (GUILayout.Button("Export button images"))
-                ButtonImageManager.ExportButtonImages(Path.Combine(Paths.PluginPath, PLUGIN_DIR, "OriginalButtonImages"));
+            if (GUILayout.Button("Export images"))
+                ImageManager.ExportImages(Path.Combine(Paths.PluginPath, PLUGIN_DIR, "OriginalImages"));
 
             GUILayout.Space(15);
             GUILayout.Label($"Press {toggleKey.Value.ToString()} to close this window.");
