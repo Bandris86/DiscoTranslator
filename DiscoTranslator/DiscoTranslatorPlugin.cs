@@ -13,7 +13,7 @@ using UnityEngine;
 
 namespace DiscoTranslator
 {
-    [BepInPlugin("akintos.DiscoTranslator", "Disco Translator", "0.1.0.0")]
+    [BepInPlugin("akintos.DiscoTranslator", "Disco Translator", "0.2.0.0")]
     [BepInProcess("disco.exe")]
     public class DiscoTranslatorPlugin : BaseUnityPlugin
     {
