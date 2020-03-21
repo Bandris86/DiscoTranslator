@@ -42,7 +42,8 @@ namespace DiscoTranslator.Translation
                 if (shortName == "Dialogue")
                     continue;
 
-                catalog = LanguageSourceToCatalog(source, 0);
+                int engIndex = source.mSource.GetLanguageIndex("English");
+                catalog = LanguageSourceToCatalog(source, engIndex);
 
                 var catalogPath = Path.Combine(directory, shortName + ".pot");
 

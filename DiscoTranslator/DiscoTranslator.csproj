@@ -47,6 +47,10 @@
       <HintPath>..\Lib\UnityEngine.CoreModule.dll</HintPath>
       <Private>false</Private>
     </Reference>
+    <Reference Include="UnityEngine.ImageConversionModule">
+      <HintPath>..\Lib\UnityEngine.ImageConversionModule.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
     <Reference Include="UnityEngine.IMGUIModule">
       <HintPath>..\Lib\UnityEngine.IMGUIModule.dll</HintPath>
       <Private>false</Private>
