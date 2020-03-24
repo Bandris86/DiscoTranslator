@@ -22,14 +22,8 @@ namespace DiscoTranslator
             toggleKey = Config.Bind("Hotkeys", "Toggle interface", new KeyboardShortcut(KeyCode.T, KeyCode.LeftAlt));
             reloadKey = Config.Bind("Hotkeys", "Reload translation", new KeyboardShortcut(KeyCode.R, KeyCode.LeftAlt));
 
-            try
-            {
-                var harmony = BepInEx.Harmony.HarmonyWrapper.PatchAll(typeof(Hook));
-            }
-            catch (Exception e)
-            {
-                Logger.LogError(e);
-            }
+            var harmony = BepInEx.Harmony.HarmonyWrapper.PatchAll(typeof(Hook), "akintos.DiscoTranslator");
+            BepInEx.Harmony.HarmonyWrapper.PatchAll(typeof(Patches.ConversationLoggerPatch), harmony);
 
             TranslationManager.LogEvent += Logger.Log;
         }
