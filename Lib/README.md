@@ -7,6 +7,7 @@ Assembly-CSharp.dll
 Assembly-CSharp-firstpass.dll
 UnityEngine.dll
 UnityEngine.CoreModule.dll
+UnityEngine.ImageConversionModule
 UnityEngine.IMGUIModule.dll
 UnityEngine.JSONSerializeModule.dll
 UnityEngine.UI.dll

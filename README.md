@@ -14,20 +14,26 @@ Press <kbd>Alt</kbd> + <kbd>T</kbd> (configurable) to open GUI window. Press aga
 
 ## Features
 
-### 1. Translation loader
+### Translation loader
 
 Load `gettext PO` files from `DiscoTranslator\Translation` directory.
 
-### 2. Runtime translation reload
+### Runtime translation reload
 
-Press <kbd>Alt</kbd> + <kbd>R</kbd> (configurable) or press `Reload translation` button from UI to reload all translation files.
+Press <kbd>Alt</kbd> + <kbd>R</kbd> or <kbd>Reload translation</kbd> button from UI to reload all translation files.
 
 Reloaded translations will be applied when new texts appear or UI component reappears.
 
-### 3. Catalog export
+### Catalog export
 
-Press `Export catalog` button from UI. The plugin will create `gettext POT` catalog files at `DiscoTranslator\Catalog` directory.
+Press <kbd>Export catalog</kbd> button from UI. The plugin will create `gettext POT` catalog files at `DiscoTranslator\Catalog` directory.
 
-### 4. Database export
+### Image translation
+
+Press <kbd>Export images</kbd> button from UI to extract images.
+
+Translate images at `DiscoTranslator\OriginalImages` and put them into `DiscoTranslator\Images` folder.
+
+### Database export
 
 Press `Export dialogue database` button from UI. The plugin will create `database.json` file at `DiscoTranslator` directory.
