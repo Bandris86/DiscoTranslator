@@ -10,7 +10,7 @@ This plugin hooks translation request(`I2.Loc.LocalizationManager.GetTranslation
 
 ## Usage
 
-Press <kbd>Alt</kbd> + <kbd>T</kbd> (configurable) to open GUI window. Press again to close.
+Press <kbd>Alt</kbd> + <kbd>T</kbd> (configurable) to open GUI window. Press again to close. Töttötöm.
 
 ## Features
 
