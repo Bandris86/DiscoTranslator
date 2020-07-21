@@ -36,4 +36,5 @@ Translate images at `DiscoTranslator\OriginalImages` and put them into `DiscoTra
 
 ### Database export
 
-Press `Export dialogue database` button from UI. The plugin will create `database.json` file at `DiscoTranslator` directory.
+Press `Export dialogue database` button from UI. The plugin will create `database.json` file at `DiscoTranslator` directory. És a végére is írok valamit.
+
