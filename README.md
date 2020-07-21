@@ -16,9 +16,7 @@ Press <kbd>Alt</kbd> + <kbd>T</kbd> (configurable) to open GUI window. Press aga
 
 ### Translation loader
 
-Load `gettext PO` files from `DiscoTranslator\Translation` directory.
-Load `gettext PO` files from `DiscoTranslator\Translation` directory.
-
+Load `gettext PO` files from `DiscoTranslator\Translation` directory. Most valós izét írok.
 
 ### Runtime translation reload
 
